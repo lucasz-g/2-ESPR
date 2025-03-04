@@ -18,6 +18,13 @@ class TesteArray {
         Pessoa pessoa1 = new Pessoa("Lucas", 23, "CPF", enderecos);
         Pessoa pessoa2 = new Pessoa("Joao", 22, "RG", enderecos);
 
+        pessoas.add(pessoa1);
+        pessoas.add(pessoa2);
+        
+        for (Pessoa pessoa : pessoas) {
+            System.out.println(pessoa.getNome());
+        }
+
     }
 
 }

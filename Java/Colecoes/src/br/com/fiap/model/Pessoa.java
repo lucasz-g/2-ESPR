@@ -53,6 +53,10 @@ public class Pessoa {
         this.endereco = endereco;
     }
 
+    public void exibirPesoa(){
+        System.out.println("Nome: " + this.nome + " - Idade: " + this.idade + " - Documento: " + this.documento);
+    }
+
     @Override
     public String toString() {
         return "Pessoa [nome=" + nome + ", idade=" + idade + ", documento=" + documento + ", endereco=" + endereco

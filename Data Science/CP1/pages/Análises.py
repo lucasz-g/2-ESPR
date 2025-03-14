@@ -14,7 +14,7 @@ def app():
         df['Product_ID'] = df["Product_ID"].astype(str)
 
         # Criando as abas corretamente
-        tab1, tab2, tab3 = st.tabs(["Visualização", "Análises Descritivas", "Distribuições"])
+        tab1, tab2, tab3 = st.tabs(["Visualização", "Análises Descritivas", "Gráficos"])
 
         with tab1:
             st.subheader("Dataframe")
@@ -45,21 +45,43 @@ def app():
             st.write("#### Número de valores únicos por coluna")
             st.write(df.nunique())
 
-        with tab3:  # Correção do erro do `tab2` duplicado
-            st.subheader("Distribuições")
+        with tab3:
+            st.subheader("Gráficos")
 
-            colunas_numericas = df.select_dtypes(include=["number"]).columns.tolist()
-            
-            if not colunas_numericas:
-                st.write("Nenhuma coluna numérica encontrada no dataset.")
-            else:
-                coluna_escolhida = st.selectbox("Escolha uma coluna para visualizar a distribuição:", colunas_numericas)
-                
-                fig = px.histogram(df, x=coluna_escolhida, nbins=30, title=f"Distribuição de {coluna_escolhida}")
-                st.plotly_chart(fig)
+            # Correlação
+            dados_numeric = df.select_dtypes(include=["number"])
+            fig_corr = px.imshow(dados_numeric.corr(), color_continuous_scale='Thermal', title="Correlação entre variáveis numéricas")
+            st.plotly_chart(fig_corr)
 
-            st.subheader("Distribuição Binomial")
+            # Dispersão
+            fig_disp_1 = px.scatter(df, x='Unit_Cost', y='Unit_Price', title="Dispersão: Custo por unidade vs Preço por unidade")
+            st.plotly_chart(fig_disp_1)
+            fig_disp_2 = px.scatter(df, x='Sales_Amount', y='Quantity_Sold', title="Dispersão: Faturamento vs Quantidade Vendida")
+            st.plotly_chart(fig_disp_2)
 
+            # Faturamento por região - Total
+            amount_per_region = df.groupby('Region')[['Sales_Amount']].sum().reset_index()
+            amount_per_region = amount_per_region.sort_values('Sales_Amount', ascending=False)
+            fig_region_total = px.bar(amount_per_region, x='Region', y='Sales_Amount', color='Sales_Amount', color_continuous_scale='peach', title='Total de Faturamento por Região')
+            st.plotly_chart(fig_region_total)
+
+            # Faturamento por região - Média
+            mean_amount_per_region = df.groupby('Region')[['Sales_Amount']].mean().reset_index()
+            mean_amount_per_region = mean_amount_per_region.sort_values('Sales_Amount', ascending=False)
+            fig_region_mean = px.bar(mean_amount_per_region, x='Region', y='Sales_Amount', color='Sales_Amount', color_continuous_scale='peach', title='Média de Faturamento por Região')
+            st.plotly_chart(fig_region_mean)
+
+            # Categoria mais vendida
+            quantity_per_category = df.groupby('Product_Category')[['Quantity_Sold']].sum().reset_index()
+            quantity_per_category = quantity_per_category.sort_values('Quantity_Sold', ascending=False)
+            fig_category = px.bar(quantity_per_category, x='Product_Category', y='Quantity_Sold', color='Quantity_Sold', color_continuous_scale='peach', title='Quantidade Vendida por Categoria de Produto')
+            st.plotly_chart(fig_category)
+
+            # Sazonalidade de quantidade vendida
+            data_grouped = df.groupby('Sale_Date')['Quantity_Sold'].sum().reset_index()
+            data_grouped.sort_values('Quantity_Sold', ascending=False)
+            fig_seasonality = px.line(data_grouped, x='Sale_Date', y='Quantity_Sold', title="Sazonalidade de Vendas por Data")
+            st.plotly_chart(fig_seasonality)
 
 
 if __name__ == '__main__':

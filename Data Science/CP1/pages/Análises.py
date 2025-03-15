@@ -62,19 +62,19 @@ def app():
             # Faturamento por região - Total
             amount_per_region = df.groupby('Region')[['Sales_Amount']].sum().reset_index()
             amount_per_region = amount_per_region.sort_values('Sales_Amount', ascending=False)
-            fig_region_total = px.bar(amount_per_region, x='Region', y='Sales_Amount', color='Sales_Amount', color_continuous_scale='peach', title='Total de Faturamento por Região')
+            fig_region_total = px.bar(amount_per_region, x='Region', y='Sales_Amount', color='Sales_Amount', color_continuous_scale='teal', title='Total de Faturamento por Região')
             st.plotly_chart(fig_region_total)
 
             # Faturamento por região - Média
             mean_amount_per_region = df.groupby('Region')[['Sales_Amount']].mean().reset_index()
             mean_amount_per_region = mean_amount_per_region.sort_values('Sales_Amount', ascending=False)
-            fig_region_mean = px.bar(mean_amount_per_region, x='Region', y='Sales_Amount', color='Sales_Amount', color_continuous_scale='peach', title='Média de Faturamento por Região')
+            fig_region_mean = px.bar(mean_amount_per_region, x='Region', y='Sales_Amount', color='Sales_Amount', color_continuous_scale='teal', title='Média de Faturamento por Região')
             st.plotly_chart(fig_region_mean)
 
             # Categoria mais vendida
             quantity_per_category = df.groupby('Product_Category')[['Quantity_Sold']].sum().reset_index()
             quantity_per_category = quantity_per_category.sort_values('Quantity_Sold', ascending=False)
-            fig_category = px.bar(quantity_per_category, x='Product_Category', y='Quantity_Sold', color='Quantity_Sold', color_continuous_scale='peach', title='Quantidade Vendida por Categoria de Produto')
+            fig_category = px.bar(quantity_per_category, x='Product_Category', y='Quantity_Sold', color='Quantity_Sold', color_continuous_scale='teal', title='Quantidade Vendida por Categoria de Produto')
             st.plotly_chart(fig_category)
 
             # Sazonalidade de quantidade vendida

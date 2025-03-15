@@ -34,6 +34,7 @@ if file:
 
         if distribucao == "Binomial":
             st.subheader("Distribuição Binomial")
+            st.write("De **n** vendas, qual a probabilidade de **y** vendas serem para novos clientes?")
             n = st.number_input("Total de tentativas (n)", min_value=1, value=1000)
             p = st.number_input("Probabilidade de sucesso (p)", min_value=0.0, max_value=1.0, value=0.504)
             x = st.number_input("Número de sucessos desejados (x)", min_value=0, value=500)
@@ -54,6 +55,7 @@ if file:
 
         elif distribucao == "Poisson":
             st.subheader("Distribuição de Poisson")
+            st.write("Qual a probabilidade de vender exatamente **k** unidades em um dia?")
             total_vendas = df['Quantity_Sold'].sum()
             total_dias = df['Sale_Date'].nunique()  # Substitua pela coluna correta
             lambda_ = total_vendas / total_dias
@@ -74,6 +76,7 @@ if file:
 
         elif distribucao == "Normal":
             st.subheader("Distribuição Normal")
+            st.write("Qual a chance de uma venda ultrapassar **x**?")
             media = df["Sales_Amount"].mean()
             desvio_padrao = df["Sales_Amount"].std()
             x_limite = st.number_input("Limite de vendas (x)", min_value=0, value=5000)

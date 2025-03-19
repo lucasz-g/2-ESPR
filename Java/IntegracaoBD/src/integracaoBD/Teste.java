@@ -1,38 +1,25 @@
 package integracaoBD;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import integracaoBD.modelos.ServicesCRUD;
 
 public class Teste {
 
 	public static void main(String[] args) throws SQLException {
-		
-		String url = "jdbc:oracle:thin:@oracle.fiap.com.br:1521:ORCL";
-		String user = "rm554070";
-		String password = "fiap25";
-		
 		String insert = "INSERT INTO ALUNO (ID, NOME, DOCUMENTO) VALUES (?, ?, ?)";
 		String select = "SELECT * FROM ALUNO";
 		
-		Connection conn = null;
-		PreparedStatement preparedStatement = null;
+		ServicesCRUD servicos = new ServicesCRUD();
 		
 		try {
-			conn = DriverManager.getConnection(url, user, password);
-			preparedStatement = conn.prepareStatement(insert);
-			preparedStatement.setInt(1, 2);
-			preparedStatement.setString(2, "Teste");
-			preparedStatement.setString(3, "887979");
-			preparedStatement.executeUpdate();
+			servicos.conectarBanco(); 
 			System.out.println("Inclusão efetuada com sucesso");
 			
-			preparedStatement.close();
+			servicos.inserirAluno(insert, 12, "Lucas", "88332");
 			
-			preparedStatement = conn.prepareStatement(select);
-			ResultSet resultSet = preparedStatement.executeQuery();
+			ResultSet resultSet = servicos.selecionarAluno(select); 
 			
 			while (resultSet.next()) {
 				int id = resultSet.getInt("ID");
@@ -42,13 +29,9 @@ public class Teste {
 				System.out.println("ID = " + id + " NOME = " + nome + " DOCUMENTO = " + documento);
 			}
 			
-			
 		} catch (SQLException e) {
 			e.printStackTrace();
-		} finally {
-			preparedStatement.close();
-			conn.close();
-		}
+		} 
 
 	}
 

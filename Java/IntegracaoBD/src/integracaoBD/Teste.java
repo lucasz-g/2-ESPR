@@ -15,7 +15,6 @@ public class Teste {
 		String password = "fiap25";
 		
 		String insert = "INSERT INTO ALUNO (ID, NOME, DOCUMENTO) VALUES (?, ?, ?)";
-		
 		String select = "SELECT * FROM ALUNO";
 		
 		Connection conn = null;

@@ -1,4 +1,4 @@
-package formas;
+package br.com.exercicio.abstratos.formas;
 
 public class Circulo extends FormaGeometrica{
 	

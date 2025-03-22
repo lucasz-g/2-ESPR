@@ -1,4 +1,5 @@
-package animais;
+package br.com.exercicio.abstratos.animais;
+
 public abstract class Animal {
 	
 	// Declarado, mas sem corpo.

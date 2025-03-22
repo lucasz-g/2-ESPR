@@ -1,4 +1,4 @@
-package animais;
+package br.com.exercicio.abstratos.animais;
 
 public class Teste {
 	public static void main(String[] args) {

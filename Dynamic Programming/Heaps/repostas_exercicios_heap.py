@@ -47,6 +47,7 @@ class Heap:
 
     def __repr__(self):
         return str(self.items)
+
 #Exercicio 1
 def heap_sort(arr):
     heap = Heap()
@@ -89,7 +90,6 @@ print(k_maiores_elementos(nums, 3))  # Saída esperada: [40, 30, 25]
 
 
 #Exercicio 3
-
 class Tarefa:
     def __init__(self, descricao, prioridade):
         self.descricao = descricao

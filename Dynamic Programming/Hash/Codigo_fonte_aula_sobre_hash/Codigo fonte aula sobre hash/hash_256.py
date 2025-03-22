@@ -1,6 +1,6 @@
 import hashlib
 
 texto = "Olá mundo"
-hash = hashlib.sha256(texto.encode()).hexdigest()
+hash_texto = hashlib.sha256(texto.encode()).hexdigest()
 
-print(hash)
+print(hash_texto)

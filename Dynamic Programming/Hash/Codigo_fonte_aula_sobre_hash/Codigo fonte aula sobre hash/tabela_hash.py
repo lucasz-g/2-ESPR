@@ -51,6 +51,3 @@ buscar_valor("cenoura", df, tamanho_tabela)
 buscar_valor("abacate", df, tamanho_tabela)
 buscar_valor("morango", df, tamanho_tabela)
 buscar_valor("camarão", df, tamanho_tabela)  # não existe
-
-
-

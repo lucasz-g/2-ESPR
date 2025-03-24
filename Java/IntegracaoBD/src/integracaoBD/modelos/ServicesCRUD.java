@@ -1,43 +1,97 @@
 package integracaoBD.modelos;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class ServicesCRUD {
-	
-	private Connection conn; 
-	private String url = "jdbc:oracle:thin:@oracle.fiap.com.br:1521:ORCL";
-	private String user = "rm554070";
-	private String password = "fiap25";	
-	
-	public void conectarBanco() throws SQLException {
-		this.conn = DriverManager.getConnection(this.url, this.user, this.password);
-	}
-	
-	public PreparedStatement statement(String statementType) throws SQLException {
-		PreparedStatement preparedStatement = this.conn.prepareStatement(statementType);
-		return preparedStatement;
-	}
-	
-	public void inserirAluno(String sql, int id, String nome, String documento) throws SQLException {
-		PreparedStatement statementInsert = statement(sql);
-		
-		statementInsert.setInt(1, id);
-		statementInsert.setString(2, nome);
-		statementInsert.setString(3, documento);
-		
-		statementInsert.executeUpdate();
 
-		statementInsert.close();
+    private static final String URL = "jdbc:oracle:thin:@oracle.fiap.com.br:1521:ORCL";
+    private static final String USER = "rm554070";
+    private static final String PASSWORD = "fiap25";
+
+    private Connection conectarBanco() throws SQLException {
+        return DriverManager.getConnection(URL, USER, PASSWORD);
+    }
+
+    public void inserirAluno(int id, String nome, String documento) {
+        String sql = "INSERT INTO ALUNO (ID, NOME, DOCUMENTO) VALUES (?, ?, ?)";
+        
+        try (Connection conn = conectarBanco();
+             PreparedStatement statement = conn.prepareStatement(sql)) {
+            
+            statement.setInt(1, id);
+            statement.setString(2, nome);
+            statement.setString(3, documento);
+            statement.executeUpdate();
+            
+            System.out.println("Aluno inserido com sucesso!");
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void selecionarAlunos() {
+        String sql = "SELECT * FROM ALUNO";
+
+        try (Connection conn = conectarBanco();
+             PreparedStatement statement = conn.prepareStatement(sql);
+             ResultSet resultSet = statement.executeQuery()) {
+            
+            while (resultSet.next()) {
+                int id = resultSet.getInt("ID");
+                String nome = resultSet.getString("NOME");
+                String documento = resultSet.getString("DOCUMENTO");
+
+                System.out.println("ID = " + id + " | NOME = " + nome + " | DOCUMENTO = " + documento);
+            }
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public void atualizarAluno(int id, String novoNome, String novoDoc) {
+    	String sql = "UPDATE ALUNO SET NOME = ?, DOCUMENTO = ? WHERE ID = ?";
+    	
+    	try (Connection conn = conectarBanco();
+    		PreparedStatement statement = conn.prepareStatement(sql)) {
+    			
+    		statement.setString(1, novoNome);
+    		statement.setString(2, novoDoc);
+    		statement.setInt(3, id);
+    			
+    		int linhasAfetadas = statement.executeUpdate();
+    			
+    		if (linhasAfetadas > 0) {
+    			System.out.println("Aluno " + id + " atualizado com sucesso!");
+    		} else {
+    			System.out.println("Nenhum aluno encontrado com o ID " + id);
+    		}
+    			
+    	} catch (SQLException e) {
+    		e.printStackTrace();
+    	}
+   
+    }
+
+	public void deletarAluno(int id) {
+		String sql = "DELETE FROM ALUNO WHERE ID = ?";
+		
+		try (Connection conn = conectarBanco();
+			PreparedStatement statement = conn.prepareStatement(sql)) {
+			
+			statement.setInt(1, id);
+			int linhasAfetadas = statement.executeUpdate();
+			
+			if (linhasAfetadas > 0) {
+				System.out.println("Aluno: " + id + " removido com sucesso!");
+			} else {
+				System.out.println("Nenhum aluno encontrado com o ID " + id);
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
 	}
-	
-	public ResultSet selecionarAluno(String sql) throws SQLException {
-		PreparedStatement statementSelect = statement(sql);
-		ResultSet resultSet = statementSelect.executeQuery();
-		return resultSet; 
-	}
-	
 }
